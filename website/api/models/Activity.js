@@ -11,7 +11,7 @@ module.exports = {
     name: {
       type: "string"
     },
-    age: {
+    time: {
       type: "number"
     },
     img_url: {
@@ -23,7 +23,15 @@ module.exports = {
     full_description: {
       type: "string"
     },
-
+    event_date: {
+      type: "string"
+    },
+    organizer: {
+      type: "string"
+    },
+    venue: {
+      type: "string"
+    },
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
