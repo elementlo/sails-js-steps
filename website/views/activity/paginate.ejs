@@ -1,0 +1,86 @@
+<!-- paginate.ejs -->
+<% const current = parseInt(req.query.page) || 1; %>
+<div class="row">
+  <div class="col-12 col-xl-8 col-lg-8 col-sm-12">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link" href="/person/paginate/?page=<%= Math.max(current-1, 1) %>">Previous</a>
+        </li>
+        <% for (i = 1; i <= count; i++) { %>
+        <li class="page-item">
+          <a class="page-link" href="/person/paginate/?page=<%= i %>">
+            <%= i %></a>
+        </li>
+        <% } %>
+        <li class="page-item">
+          <a class="page-link" href="/person/paginate/?page=<%= Math.min(current+1, count) %>">Next</a>
+        </li>
+      </ul>
+    </nav>
+    <% for (let i = 0; i < activities.length; i++) { %>
+    <div class="row">
+      <div class="card  col-12 col-xl-6 col-lg-6 col-sm-12">
+        <div>
+          <div>
+            <a href="/activity/detail/<%=activities[i].id %>">
+              <img class="img-fluid img-thumbnail mr-2 mb-3" src=<%=activities[i].img_url %> alt="">
+            </a>
+            <p class="main-title text-primary font-weight-bold mt-2">
+              <%= activities[i].name %>
+            </p>
+            <p class="main-describe pl-2">
+              <%= activities[i].short_description %>
+            </p>
+          </div>
+        </div>
+      </div>
+      <% if(i+1 < activities.length) {%>
+      <div class="card  col-12 col-xl-6 col-lg-6 col-sm-12">
+        <div>
+          <a href="/activity/detail/<%=activities[i+1].id %>">
+            <img class="img-fluid img-thumbnail mr-2 mb-3" src=<%=activities[i].img_url %> alt="">
+          </a>
+          <p class="main-title text-primary font-weight-bold mt-2">
+            <%= activities[i+1].name %>
+          </p>
+          <p class="main-describe pl-2">
+            <%= activities[i+1].short_description %>
+          </p>
+        </div>
+      </div>
+      <% i++%>
+      <% };%>
+    </div>
+
+    <% };%>
+  </div>
+  <div class="col-12 col-xl-4 col-lg-4 col-sm-12">
+    <label>Organizer:</label>
+    <select name="Activity[organizer]" class="form-control">
+      <option value="nan">Please pick one:</option>
+      <option value="student">student</option>
+      <option value="professor">professor</option>
+    </select>
+    <div class="form-group mt-3">
+      <label>Event Date:</label>
+      <input type="text" name="Activity[event_date]" class="datepicker form-control" required>
+    </div>
+    <div class="form-group">
+      <label>Time:</label>
+      <input type="number" class="form-control" name="Activity[time]" required>
+    </div>
+    <label>Venue:</label>
+    <select name="Activity[venue]" class="form-control">
+      <option value="nan">Please pick one:</option>
+      <option value="OEE1007">OEE1007</option>
+      <option value="AAB601">AAB601</option>
+      <option value="LT1">LT1</option>
+      <option value="RRS1017">RRS1017</option>
+    </select>
+    <div class="form-group mt-3">
+      <label>Quota:</label>
+      <input type="number" class="form-control" name="Activity[quota]" required>
+    </div>
+  </div>
+</div>

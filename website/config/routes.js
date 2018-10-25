@@ -39,6 +39,7 @@ module.exports.routes = {
 
   'GET /activity/detail/:id': 'ActivityController.detail',
   'GET /activity/admin/': 'ActivityController.admin',
+  'GET /activity/paginate': 'ActivityController.paginate',
   'GET /activity/update/:id': 'ActivityController.update',
   'POST /activity/update/:id': 'ActivityController.update',
   'POST /activity/delete/:id': 'ActivityController.delete',

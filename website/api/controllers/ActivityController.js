@@ -107,4 +107,57 @@ module.exports = {
     return res.ok("Activity Deleted.");
 
   },
+
+  search: async function (req, res) {
+
+    const qName = req.query.name || "";
+    const qAge = parseInt(req.query.age);
+
+    if (isNaN(qAge)) {
+
+      var models = await Activity.find({
+        where: {
+          name: {
+            contains: qName
+          }
+        },
+        sort: 'name'
+      });
+
+    } else {
+
+      var models = await Activity.find({
+        where: {
+          name: {
+            contains: qName
+          },
+          age: qAge
+        },
+        sort: 'name'
+      });
+
+    }
+
+    return res.view('activity/search', {
+      activities: models
+    });
+  },
+  paginate: async function (req, res) {
+
+    //const qPage = Math.max(req.query.page - 1, 0) || 0;
+
+    const numOfItemsPerPage = 2;
+
+    var models = await Activity.find({
+      limit: numOfItemsPerPage,
+      //skip: numOfItemsPerPage * qPage
+    });
+
+    var numOfPage = Math.ceil(await Activity.count() / numOfItemsPerPage);
+
+    return res.view('activity/paginate', {
+      activities: models,
+      count: numOfPage
+    });
+  },
 };
