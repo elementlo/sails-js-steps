@@ -32,6 +32,12 @@ module.exports = {
     venue: {
       type: "string"
     },
+    quota: {
+      type: "number"
+    },
+    high_light: {
+      type: "string"
+    },
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝

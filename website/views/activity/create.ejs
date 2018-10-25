@@ -3,7 +3,7 @@
   <div class="container">
     <div class="row">
       <div class="form-group col-12 col-xl-6 col-lg-6 col-sm-12">
-        <label>Name:</label>
+        <label>Event Name:</label>
         <input type="text" class="form-control" name="Activity[name]" required>
       </div>
       <div class="form-group col-12 col-xl-6 col-lg-6 col-sm-12">
@@ -32,7 +32,7 @@
         </div>
         <div class="form-group">
           <label>Time:</label>
-          <input type="text" class="form-control" name="Activity[time]" required>
+          <input type="number" class="form-control" name="Activity[time]" required>
         </div>
         <label>Venue:</label>
         <select name="Activity[venue]" class="form-control" onchange="teamSelected(this.value)">
@@ -42,16 +42,20 @@
           <option value="LT1">LT1</option>
           <option value="RRS1017">RRS1017</option>
         </select>
+        <div class="form-group mt-3">
+          <label>Quota:</label>
+          <input type="number" class="form-control" name="Activity[quota]" required>
+        </div>
+        <div>
+          <label>
+            <input name="Activity[high_light]" type="checkbox" value="high_light"> Highlighted Event
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
       </div>
     </div>
-    <div class="row">
-
-    </div>
-
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 <script>
   document.querySelector('option[value="Elements"]').selected = "selected"
-
 </script>
