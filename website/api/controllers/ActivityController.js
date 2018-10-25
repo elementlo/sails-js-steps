@@ -20,8 +20,33 @@ module.exports = {
 
   index: async function (req, res) {
 
-    var models = await Activity.find({high_light:'high_light'});
+    var models = await Activity.find({
+      high_light: 'high_light'
+    });
     return res.view('activity/index', {
+      activities: models
+    });
+
+  },
+
+  detail: async function (req, res) {
+
+    var message = Activity.getInvalidIdMsg(req.params);
+
+    if (message) return res.badRequest(message);
+
+    var model = await Activity.findOne(req.params.id);
+
+    if (!model) return res.notFound();
+
+    return res.view('activity/detail', {
+      activity: model
+    });
+
+  },
+  admin: async function (req, res) {
+    var models = await Activity.find();
+    return res.view('activity/admin', {
       activities: models
     });
 

@@ -37,7 +37,9 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-
+ 'GET /activity/detail/:id': 'ActivityController.detail',
+ 'GET /activity/admin/': 'ActivityController.admin',
+ 
   //  ╔═╗╔═╗╦  ╔═╗╔╗╔╔╦╗╔═╗╔═╗╦╔╗╔╔╦╗╔═╗
   //  ╠═╣╠═╝║  ║╣ ║║║ ║║╠═╝║ ║║║║║ ║ ╚═╗
   //  ╩ ╩╩  ╩  ╚═╝╝╚╝═╩╝╩  ╚═╝╩╝╚╝ ╩ ╚═╝
