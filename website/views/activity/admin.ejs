@@ -1,0 +1,13 @@
+<!-- admin.ejs -->
+<table class="table table-striped">
+  <tbody>
+    <% for (let i = 0; i < activities.length; i++) { %>
+    <tr>
+      <th scope="row"><%= i+1%></th>
+      <td class="text-primary">
+        <a href="/activity/update/<%= activities[i].id %>"><%= activities[i].name%></a>
+      </td>
+    </tr>
+    <% } %>
+  </tbody>
+</table>

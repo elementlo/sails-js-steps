@@ -51,4 +51,60 @@ module.exports = {
     });
 
   },
+
+  // action - update
+  update: async function (req, res) {
+
+    var message = Activity.getInvalidIdMsg(req.params);
+
+    if (message) return res.badRequest(message);
+
+    if (req.method == "GET") {
+
+      var model = await Activity.findOne(req.params.id);
+
+      if (!model) return res.notFound();
+
+      return res.view('activity/update', {
+        activity: model
+      });
+
+    } else {
+
+      if (typeof req.body.Activity === "undefined")
+        return res.badRequest("Form-data not received.");
+
+      var models = await Activity.update(req.params.id).set({
+        name: req.body.Activity.name,
+        short_description: req.body.Activity.short_description,
+        full_description: req.body.Activity.full_description,
+        event_date: req.body.Activity.event_date,
+        organizer: req.body.Activity.organizer,
+        venue: req.body.Activity.venue,
+        quota: req.body.Activity.quota,
+        high_light: req.body.Activity.high_light,
+      }).fetch();
+
+      if (models.length == 0) return res.notFound();
+
+      return res.ok("Record updated");
+
+    }
+  },
+
+  delete: async function (req, res) {
+
+    if (req.method == "GET") return res.forbidden();
+
+    var message = Activity.getInvalidIdMsg(req.params);
+
+    if (message) return res.badRequest(message);
+
+    var models = await Activity.destroy(req.params.id).fetch();
+
+    if (models.length == 0) return res.notFound();
+
+    return res.ok("Activity Deleted.");
+
+  },
 };

@@ -1,0 +1,78 @@
+<!--create.ejs-->
+<form name="updateForm" action="" method="POST">
+  <div class="container">
+    <div class="row">
+      <div class="form-group col-12 col-xl-6 col-lg-6 col-sm-12">
+        <label>Event Name:</label>
+        <input type="text" class="form-control" name="Activity[name]" value="<%= activity.name %>" required>
+      </div>
+      <div class="form-group col-12 col-xl-6 col-lg-6 col-sm-12">
+        <label>Image URL:</label>
+        <input type="text" class="form-control" name="Activity[img_url]" value="<%= activity.img_url %>" required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-12 col-xl-6 col-lg-6 col-sm-12">
+        <label>Short Description:</label><br>
+        <textarea class="form-control" name="Activity[short_description]" rows="6" required><%= activity.short_description %></textarea>
+        <label>Full Description:</label><br>
+        <textarea class="form-control" name="Activity[full_description]" rows="8"><%= activity.full_description %></textarea>
+        <button class="btn btn-danger mt-2" type="submit" onclick="deleteItem()">Delete</button>
+      </div>
+      <div class="form-group col-12 col-xl-6 col-lg-6 col-sm-12">
+        <label>Organizer:</label>
+        <select name="Activity[organizer]" class="form-control">
+          <option value="nan">Please pick one:</option>
+          <option value="student">student</option>
+          <option value="professor">professor</option>
+        </select>
+        <div class="form-group mt-3">
+          <label>Event Date:</label>
+          <input type="text" name="Activity[event_date]" class="datepicker form-control" value="<%= activity.event_date %>"
+            required>
+        </div>
+        <div class="form-group">
+          <label>Time:</label>
+          <input type="number" class="form-control" name="Activity[time]" value="<%= activity.time %>" required>
+        </div>
+        <label>Venue:</label>
+        <select name="Activity[venue]" class="form-control">
+          <option value="nan">Please pick one:</option>
+          <option value="OEE1007">OEE1007</option>
+          <option value="AAB601">AAB601</option>
+          <option value="LT1">LT1</option>
+          <option value="RRS1017">RRS1017</option>
+        </select>
+        <div class="form-group mt-3">
+          <label>Quota:</label>
+          <input type="number" class="form-control" name="Activity[quota]" value="<%= activity.quota %>" required>
+        </div>
+        <div>
+          <label>
+            <input id="high_light_checkbox" name="Activity[high_light]" type="checkbox" value="high_light"> Highlighted
+            Event
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="updateItem()">Submit</button>
+      </div>
+    </div>
+  </div>
+</form>
+<script>
+  if ("<%= activity.high_light %>" === "high_light") {
+    document.getElementById('high_light_checkbox').checked = true
+  }
+  document.querySelector('option[value=<%= activity.organizer %>]').selected = "selected";
+  document.querySelector('option[value=<%= activity.venue %>]').selected = "selected";
+
+  function updateItem() {
+      document.updateForm.action="/activity/update/<%= activity.id %>"
+      document.updateForm.submit()
+  }
+
+  function deleteItem() {
+    document.updateForm.action="/activity/delete/<%= activity.id %>/"
+    document.updateForm.submit()
+  }
+
+</script>

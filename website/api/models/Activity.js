@@ -24,7 +24,8 @@ module.exports = {
       type: "string"
     },
     event_date: {
-      type: "string"
+      type: "string",
+      columnType: 'date'
     },
     organizer: {
       type: "string"
