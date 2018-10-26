@@ -109,48 +109,87 @@ module.exports = {
   },
 
   search: async function (req, res) {
+    const qName = req.query.name || '';
+    var qOrganizer = req.query.organizer;
+    var startTime = req.query.startTime || '';
+    var endTime = req.query.endTime || '';
+    var qVenue = req.query.venue;
+    const qPage = Math.max(req.query.page - 1, 0) || 0;
+    const numOfItemsPerPage = 2;
 
-    const qName = req.query.name || "";
-    const qAge = parseInt(req.query.age);
-
-    if (isNaN(qAge)) {
-
-      var models = await Activity.find({
-        where: {
-          name: {
-            contains: qName
-          }
-        },
-        sort: 'name'
-      });
-
-    } else {
-
-      var models = await Activity.find({
-        where: {
-          name: {
-            contains: qName
-          },
-          age: qAge
-        },
-        sort: 'name'
-      });
-
+    if (qOrganizer == 'nan') {
+      qOrganizer = ''
     }
-
+    if (qVenue == 'nan') {
+      qVenue = ''
+    }
+    if (startTime == '') {
+      startTime = '1900-01-01'
+    }
+    if (endTime == '') {
+      endTime = '3000-01-01'
+    }
+    console.log(startTime)
+    console.log(endTime)
+    var modelsSize = await Activity.find({
+      where: {
+        name: {
+          contains: qName
+        },
+        organizer: {
+          contains: qOrganizer
+        },
+        event_date: {
+          '>': new Date(startTime),
+          '<': new Date(endTime)
+        },
+        venue: {
+          contains: qVenue
+        }
+      },
+      sort: 'name',
+    });
+    var models = await Activity.find({
+      where: {
+        name: {
+          contains: qName
+        },
+        organizer: {
+          contains: qOrganizer
+        },
+        event_date: {
+          '>': new Date(startTime),
+          '<': new Date(endTime)
+        },
+        venue: {
+          contains: qVenue
+        }
+      },
+      sort: 'name',
+      limit: numOfItemsPerPage,
+      skip: numOfItemsPerPage * qPage
+    });
+    console.log(modelsSize.length)
+    var numOfPage = Math.ceil(await modelsSize.length / numOfItemsPerPage);
     return res.view('activity/search', {
-      activities: models
+      activities: models,
+      count: numOfPage,
+      mOrganizer:qOrganizer,
+      mName:qName,
+      mStartTime:startTime,
+      mEndTime:endTime,
+      mVenue:qVenue
     });
   },
   paginate: async function (req, res) {
 
-    //const qPage = Math.max(req.query.page - 1, 0) || 0;
+    const qPage = Math.max(req.query.page - 1, 0) || 0;
 
     const numOfItemsPerPage = 2;
 
     var models = await Activity.find({
       limit: numOfItemsPerPage,
-      //skip: numOfItemsPerPage * qPage
+      skip: numOfItemsPerPage * qPage
     });
 
     var numOfPage = Math.ceil(await Activity.count() / numOfItemsPerPage);
