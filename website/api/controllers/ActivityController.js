@@ -111,12 +111,13 @@ module.exports = {
   search: async function (req, res) {
     const qName = req.query.name || '';
     var qOrganizer = req.query.organizer;
-    var startTime = req.query.startTime || '';
-    var endTime = req.query.endTime || '';
+    var startTime = req.query.startTime;
+    var endTime = req.query.endTime;
     var qVenue = req.query.venue;
     const qPage = Math.max(req.query.page - 1, 0) || 0;
     const numOfItemsPerPage = 2;
 
+    console.log(qName,qOrganizer,startTime,endTime,qVenue)
     if (qOrganizer == 'nan') {
       qOrganizer = ''
     }
