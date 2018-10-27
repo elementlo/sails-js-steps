@@ -1,7 +1,5 @@
 # eventmanagementsystem-2018-elementlo
 eventmanagementsystem-2018-elementlo created by GitHub Classroom
-# eventmanagementsystem-2018-elementlo
-eventmanagementsystem-2018-elementlo created by GitHub Classroom
 
 ### Web exercise after class
 this respo conduct a basic website under sails, it'e functions are as below:
