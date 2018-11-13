@@ -65,6 +65,12 @@ module.exports.bootstrap = async function (done) {
     },
     // etc.
   ]);
+
+  await User.createEach([
+    { "username": "admin", "password": "1234" },
+    { "username": "student", "password": "1234" }
+    // etc.
+]);
   // By convention, this is a good place to set up fake data during development.
   //
   // For example:

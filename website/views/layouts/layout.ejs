@@ -38,7 +38,7 @@
     integrity="sha256-9w7XtQnqRDvThmsQHfLmXdDbGasYsSjF6FSXrDh7F6g=" crossorigin="anonymous" />
 </head>
 
-<body>
+<body onload="pageLoaded()">
   <div class="container">
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -51,10 +51,12 @@
           <div class="navbar-nav" id="main-tabs">
             <a class="nav-item nav-link active" href="/">Home<span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="/activity/search?name=&organizer=nan&startTime=&endTime=&venue=nan">Search</a>
-            <a class="nav-item nav-link" href="/activity/create">Create</a>
-            <a class="nav-item nav-link" href="/activity/admin">Admin</a>
+            <a id="aCreate" style="display:none" class="nav-item nav-link" href="/activity/create">Create</a>
+            <a id="aAdmin" style="display:none" class="nav-item nav-link" href="/activity/admin">Admin</a>
           </div>
         </div>
+        <a class="nav-item nav-link float-right" href="/user/login">Login</a>
+
       </nav>
       <div class="jumbotron jumbotron-fluid">
         <div class="container">
@@ -150,6 +152,22 @@
         format: 'yyyy-mm-dd',
         startDate: '-3d'
       });
+
+    </script>
+    <script>
+      function pageLoaded() {
+        var aCreate = document.getElementById("aCreate");
+        var aAdmin = document.getElementById("aAdmin");
+        "<% if(typeof (loginReturn) != 'undefined'&&loginReturn.username=='admin') {%>"
+        aCreate.style.setProperty("display", "inline");
+        aAdmin.style.setProperty("display", "inline");
+        console.log("<%= loginReturn %>")
+        "<%}else{%>"
+        aCreate.style = "display:none";
+        aAdmin.style = "display:none";
+        "<%}%>"
+      }
     </script>
 </body>
+
 </html>

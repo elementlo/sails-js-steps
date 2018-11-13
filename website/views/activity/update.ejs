@@ -62,16 +62,17 @@
   if ("<%= activity.high_light %>" === "high_light") {
     document.getElementById('high_light_checkbox').checked = true
   }
+  console.log("<%= activity.organizer %>")
   document.querySelector('option[value=<%= activity.organizer %>]').selected = "selected";
   document.querySelector('option[value=<%= activity.venue %>]').selected = "selected";
 
   function updateItem() {
-      document.updateForm.action="/activity/update/<%= activity.id %>"
-      document.updateForm.submit()
+    document.updateForm.action = "/activity/update/<%= activity.id %>"
+    document.updateForm.submit()
   }
 
   function deleteItem() {
-    document.updateForm.action="/activity/delete/<%= activity.id %>/"
+    document.updateForm.action = "/activity/delete/<%= activity.id %>/"
     document.updateForm.submit()
   }
 

@@ -8,7 +8,9 @@
 module.exports = {
   create: async function (req, res) {
     if (req.method == "GET")
-      return res.view('activity/create');
+      return res.view('activity/create',{
+        loginReturn:req.session,
+      });
 
     if (typeof req.body.Activity === "undefined")
       return res.badRequest("Form-data not received.");

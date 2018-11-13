@@ -18,5 +18,7 @@ module.exports.policies = {
   ***************************************************************************/
 
   // '*': true,
-
+  ActivityController: {
+    create: 'isAdmin',
+  }
 };
