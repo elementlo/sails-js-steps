@@ -53,9 +53,11 @@
             <a class="nav-item nav-link" href="/activity/search?name=&organizer=nan&startTime=&endTime=&venue=nan">Search</a>
             <a id="aCreate" style="display:none" class="nav-item nav-link" href="/activity/create">Create</a>
             <a id="aAdmin" style="display:none" class="nav-item nav-link" href="/activity/admin">Admin</a>
+            <a id="aRegistered" style="display:none" class="nav-item nav-link" href="/user/registrationDetail">My Registered Event</a>
           </div>
         </div>
-        <a class="nav-item nav-link float-right" href="/user/login">Login</a>
+        <span>Hi,~<%= typeof(loginReturn)=="undefined"?"friend":loginReturn.username %><a class="float-right" 
+        <%= typeof(loginReturn)=="undefined"?"href=/user/login":"href=/user/logout" %> ><%=typeof(loginReturn)=="undefined"?"( Login )":"( Logout )"%></a></span>
 
       </nav>
       <div class="jumbotron jumbotron-fluid">
@@ -158,15 +160,19 @@
       function pageLoaded() {
         var aCreate = document.getElementById("aCreate");
         var aAdmin = document.getElementById("aAdmin");
+        var aRegistered=document.getElementById("aRegistered");
+        "<% if(typeof (loginReturn) != 'undefined'&&loginReturn.username=='student') {%>"
+        aRegistered.style.setProperty("display", "inline");
+        "<%}%>"
         "<% if(typeof (loginReturn) != 'undefined'&&loginReturn.username=='admin') {%>"
         aCreate.style.setProperty("display", "inline");
         aAdmin.style.setProperty("display", "inline");
-        console.log("<%= loginReturn %>")
         "<%}else{%>"
         aCreate.style = "display:none";
         aAdmin.style = "display:none";
         "<%}%>"
       }
+
     </script>
 </body>
 

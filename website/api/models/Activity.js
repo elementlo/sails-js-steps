@@ -53,6 +53,10 @@ module.exports = {
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
 
+    registered:{
+      collection:'User',
+      via:'register',
+    }
   },
   getInvalidIdMsg: function (opts) {
     if (typeof opts.id === "undefined" || isNaN(parseInt(opts.id)))

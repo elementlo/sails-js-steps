@@ -48,8 +48,15 @@ module.exports.routes = {
   //  ╠═╣╠═╝║  ║╣ ║║║ ║║╠═╝║ ║║║║║ ║ ╚═╗
   //  ╩ ╩╩  ╩  ╚═╝╝╚╝═╩╝╩  ╚═╝╩╝╚╝ ╩ ╚═╝
 
-
-
+  '/activity/populate': { view: '404' },
+  '/user/populate': { view: '404' },
+  '/user/add': { view: '404' },
+  '/user/remove': { view: '404' },
+  
+  '/activity/:id/:association': 'ActivityController.populate',
+  '/user/:username/:association': 'UserController.populate',
+  '/user/:id/:association/add/:fk': 'UserController.add',
+  '/user/:id/:association/remove/:fk': 'UserController.remove',
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
   //  ║║║║╣ ╠╩╗╠═╣║ ║║ ║╠╩╗╚═╗
   //  ╚╩╝╚═╝╚═╝╩ ╩╚═╝╚═╝╩ ╩╚═╝

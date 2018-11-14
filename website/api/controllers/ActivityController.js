@@ -8,8 +8,8 @@
 module.exports = {
   create: async function (req, res) {
     if (req.method == "GET")
-      return res.view('activity/create',{
-        loginReturn:req.session,
+      return res.view('activity/create', {
+        loginReturn: req.session,
       });
 
     if (typeof req.body.Activity === "undefined")
@@ -26,7 +26,8 @@ module.exports = {
       high_light: 'high_light'
     });
     return res.view('activity/index', {
-      activities: models
+      activities: models,
+      loginReturn: req.session,
     });
 
   },
@@ -49,7 +50,8 @@ module.exports = {
   admin: async function (req, res) {
     var models = await Activity.find();
     return res.view('activity/admin', {
-      activities: models
+      activities: models,
+      loginReturn: req.session,
     });
 
   },
@@ -119,7 +121,7 @@ module.exports = {
     const qPage = Math.max(req.query.page - 1, 0) || 0;
     const numOfItemsPerPage = 2;
 
-    console.log(qName,qOrganizer,startTime,endTime,qVenue)
+    console.log(qName, qOrganizer, startTime, endTime, qVenue)
     if (qOrganizer == 'nan') {
       qOrganizer = ''
     }
@@ -177,11 +179,12 @@ module.exports = {
     return res.view('activity/search', {
       activities: models,
       count: numOfPage,
-      mOrganizer:qOrganizer,
-      mName:qName,
-      mStartTime:startTime,
-      mEndTime:endTime,
-      mVenue:qVenue
+      mOrganizer: qOrganizer,
+      mName: qName,
+      mStartTime: startTime,
+      mEndTime: endTime,
+      mVenue: qVenue,
+      loginReturn: req.session,
     });
   },
   paginate: async function (req, res) {
@@ -199,7 +202,8 @@ module.exports = {
 
     return res.view('activity/paginate', {
       activities: models,
-      count: numOfPage
+      count: numOfPage,
+      loginReturn: req.session,
     });
   },
 };
