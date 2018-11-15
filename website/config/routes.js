@@ -54,9 +54,11 @@ module.exports.routes = {
   '/user/remove': { view: '404' },
   
   '/activity/:id/:association': 'ActivityController.populate',
-  '/user/:username/:association': 'UserController.populate',
-  '/user/:id/:association/add/:fk': 'UserController.add',
+  '/user/registrationDetail/:username/:association': 'UserController.populate',
+  '/user/:username/:association/add/:fk': 'UserController.add',
   '/user/:id/:association/remove/:fk': 'UserController.remove',
+
+  
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗
   //  ║║║║╣ ╠╩╗╠═╣║ ║║ ║╠╩╗╚═╗
   //  ╚╩╝╚═╝╚═╝╩ ╩╚═╝╚═╝╩ ╩╚═╝

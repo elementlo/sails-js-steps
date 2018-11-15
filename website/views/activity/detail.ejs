@@ -10,11 +10,12 @@
       <table class="table table-bordered">
         <tr><td><%= activity.full_description %></td></tr>
         <tr><td><span class="font-weight-bold">Organizer: </span><%= activity.organizer %></td></tr>
-        <tr><td><span class="font-weight-bold">Date: </span><%= activity.event_date %></td></tr>
+        <tr><td><span class="font-weight-bold">Date: </span><%= activity.event_date.getDate() %>/<%=activity.event_date.getMonth()+1%>/<%=activity.event_date.getFullYear()%></td></tr>
         <tr><td><span class="font-weight-bold">Time: </span><%= activity.time %></td></tr>
         <tr><td><span class="font-weight-bold">Venue: </span><%= activity.venue %></td></tr>
         <tr><td><span class="font-weight-bold">Quota: </span><%= activity.quota %></td></tr>
       </table>
+      <a id="aRegister" style="display:none" href="/user/<%=loginReturn.username%>/register/add/<%=activity.id%>"><button type="button" class="btn btn-primary">Register</button></a>
     </div>
   </div>
 </div>

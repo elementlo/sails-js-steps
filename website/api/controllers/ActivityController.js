@@ -7,33 +7,39 @@
 
 module.exports = {
   create: async function (req, res) {
+    var loginReturn=req.session;
     if (req.method == "GET")
       return res.view('activity/create', {
-        loginReturn: req.session,
+        loginReturn: loginReturn,
       });
 
     if (typeof req.body.Activity === "undefined")
       return res.badRequest("Form-data not received.");
 
-    await Activity.create(req.body.Activity);
+    var activity=req.body.Activity;
+    var date= new Date(req.body.Activity.event_date);
+    activity.event_date=date;
+    await Activity.create(activity);
 
     return res.ok("Successfully created!");
   },
 
   index: async function (req, res) {
+    var loginReturn=req.session;
 
     var models = await Activity.find({
       high_light: 'high_light'
     });
+    sails.log("Session: " + JSON.stringify(req.session));
     return res.view('activity/index', {
       activities: models,
-      loginReturn: req.session,
+      loginReturn: loginReturn,
     });
 
   },
 
   detail: async function (req, res) {
-
+    var loginReturn=req.session;
     var message = Activity.getInvalidIdMsg(req.params);
 
     if (message) return res.badRequest(message);
@@ -43,21 +49,24 @@ module.exports = {
     if (!model) return res.notFound();
 
     return res.view('activity/detail', {
-      activity: model
+      activity: model,
+      loginReturn: loginReturn,
     });
 
   },
   admin: async function (req, res) {
+    var loginReturn=req.session;
     var models = await Activity.find();
     return res.view('activity/admin', {
       activities: models,
-      loginReturn: req.session,
+      loginReturn: loginReturn,
     });
 
   },
 
   // action - update
   update: async function (req, res) {
+    var loginReturn=req.session;
 
     var message = Activity.getInvalidIdMsg(req.params);
 
@@ -70,7 +79,8 @@ module.exports = {
       if (!model) return res.notFound();
 
       return res.view('activity/update', {
-        activity: model
+        activity: model,
+        loginReturn: loginReturn,
       });
 
     } else {
@@ -82,7 +92,9 @@ module.exports = {
         name: req.body.Activity.name,
         short_description: req.body.Activity.short_description,
         full_description: req.body.Activity.full_description,
-        event_date: req.body.Activity.event_date,
+        event_date: new Date(req.body.Activity.event_date),
+
+
         organizer: req.body.Activity.organizer,
         venue: req.body.Activity.venue,
         quota: req.body.Activity.quota,
@@ -113,6 +125,7 @@ module.exports = {
   },
 
   search: async function (req, res) {
+    var loginReturn=req.session;
     const qName = req.query.name || '';
     var qOrganizer = req.query.organizer;
     var startTime = req.query.startTime;
@@ -184,10 +197,11 @@ module.exports = {
       mStartTime: startTime,
       mEndTime: endTime,
       mVenue: qVenue,
-      loginReturn: req.session,
+      loginReturn: loginReturn,
     });
   },
   paginate: async function (req, res) {
+    var loginReturn=req.session;
 
     const qPage = Math.max(req.query.page - 1, 0) || 0;
 
@@ -203,7 +217,7 @@ module.exports = {
     return res.view('activity/paginate', {
       activities: models,
       count: numOfPage,
-      loginReturn: req.session,
+      loginReturn: loginReturn,
     });
   },
 };

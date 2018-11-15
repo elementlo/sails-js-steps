@@ -24,7 +24,7 @@
         <div>
           <div>
             <a href="/activity/detail/<%=activities[i].id %>">
-              <img class="img-fluid img-thumbnail mr-2 mb-3" src=<%=activities[i].img_url %> alt="">
+              <img class="img-fluid img-thumbnail mr-2 mb-3 w-100 h-100" src=<%=activities[i].img_url %> alt="">
             </a>
             <p class="main-title text-primary font-weight-bold mt-2">
               <%= activities[i].name %>
@@ -39,7 +39,7 @@
       <div class="card  col-12 col-xl-6 col-lg-6 col-sm-12">
         <div>
           <a href="/activity/detail/<%=activities[i+1].id %>">
-            <img class="img-fluid img-thumbnail mr-2 mb-3" src=<%=activities[i].img_url %> alt="">
+            <img class="img-fluid img-thumbnail mr-2 mb-3 w-100 h-100" src=<%=activities[i+1].img_url %> alt="">
           </a>
           <p class="main-title text-primary font-weight-bold mt-2">
             <%= activities[i+1].name %>

@@ -53,11 +53,14 @@
             <a class="nav-item nav-link" href="/activity/search?name=&organizer=nan&startTime=&endTime=&venue=nan">Search</a>
             <a id="aCreate" style="display:none" class="nav-item nav-link" href="/activity/create">Create</a>
             <a id="aAdmin" style="display:none" class="nav-item nav-link" href="/activity/admin">Admin</a>
-            <a id="aRegistered" style="display:none" class="nav-item nav-link" href="/user/registrationDetail">My Registered Event</a>
+            <a id="aRegistered" style="display:none" class="nav-item nav-link" href="/user/registrationDetail/<%= typeof(loginReturn)=='undefined'?'':loginReturn.username%>/register">My
+              Registered Event</a>
           </div>
         </div>
-        <span>Hi,~<%= typeof(loginReturn)=="undefined"?"friend":loginReturn.username %><a class="float-right" 
-        <%= typeof(loginReturn)=="undefined"?"href=/user/login":"href=/user/logout" %> ><%=typeof(loginReturn)=="undefined"?"( Login )":"( Logout )"%></a></span>
+        <span>Hi,~
+          <%= typeof(loginReturn.username)=="undefined"?"friend":loginReturn.username %><a class="float-right" <%=typeof(loginReturn.username)=="undefined"
+            ?"href=/user/login":"href=/user/logout" %> >
+            <%=typeof(loginReturn.username)=="undefined"?"( Login )":"( Logout )"%></a></span>
 
       </nav>
       <div class="jumbotron jumbotron-fluid">
@@ -95,7 +98,7 @@
     -->
 
     <!--TEMPLATES-->
-    
+
     <!--TEMPLATES END-->
 
 
@@ -160,13 +163,22 @@
       function pageLoaded() {
         var aCreate = document.getElementById("aCreate");
         var aAdmin = document.getElementById("aAdmin");
-        var aRegistered=document.getElementById("aRegistered");
+        var aRegistered = document.getElementById("aRegistered");
+        var aRegister = document.getElementById("aRegister");
         "<% if(typeof (loginReturn) != 'undefined'&&loginReturn.username=='student') {%>"
         aRegistered.style.setProperty("display", "inline");
+        if (aRegister != null) {
+          aRegister.style.setProperty("display", "inline");
+        }
+        "<%}else{%>"
+        if (aRegister != null) {
+          aRegister.style.setProperty("display", "none");
+        }
         "<%}%>"
         "<% if(typeof (loginReturn) != 'undefined'&&loginReturn.username=='admin') {%>"
         aCreate.style.setProperty("display", "inline");
         aAdmin.style.setProperty("display", "inline");
+
         "<%}else{%>"
         aCreate.style = "display:none";
         aAdmin.style = "display:none";

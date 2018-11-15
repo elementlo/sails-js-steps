@@ -1,1 +1,30 @@
-<%console.log(registration)%>
+<%sails.log(registration[0])%>
+<div class="row">
+    <% for (let i = 0; i < registration[0].register.length; i++) { %>
+  <div class="card  col-12 col-xl-6 col-lg-6 col-sm-12">
+    <div>
+      <div>
+        <a href="">
+          <img class="img-fluid img-thumbnail" src=<%= registration[0].register[i].img_url%> alt="">
+        </a>
+        <p class="main-title text-primary font-weight-bold mt-2">
+          <%=registration[0].register[i].name%>
+        </p>
+        <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <td>Date: <%= registration[0].register[i].event_date.getDate() %>/<%=registration[0].register[i].event_date.getMonth()+1%>/<%=registration[0].register[i].event_date.getFullYear()%></td>
+              </tr>
+              <tr>
+                <td>Time: <%=registration[0].register[i].time%></td>
+              </tr>
+              <tr>
+                <td>Venue: <%=registration[0].register[i].venue%></td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+    </div>
+  </div>
+  <% };%>
+</div>

@@ -7,11 +7,15 @@
 
 module.exports = {
   login: async function (req, res) {
+    var loginReturn = req.session;
 
-    if (req.method == "GET") return res.view('user/login');
+    if (req.method == "GET") return res.view('user/login', {
+      loginReturn: loginReturn,
+    });
 
     if (!req.body.username) return res.badRequest();
     if (!req.body.password) return res.badRequest();
+
 
     var user = await User.findOne({
       username: req.body.username
@@ -30,7 +34,6 @@ module.exports = {
     var models = await Activity.find({
       high_light: 'high_light'
     });
-
     req.session.regenerate(function (err) {
 
       if (err) return res.serverError(err);
@@ -39,11 +42,11 @@ module.exports = {
 
       sails.log("Session: " + JSON.stringify(req.session));
 
-      var sLoginReturn = req.session;
+      loginReturn = req.session;
       // return res.json(req.session);
 
       return res.view('activity/index', {
-        loginReturn: sLoginReturn,
+        loginReturn: loginReturn,
         activities: models
       });
     });
@@ -51,12 +54,15 @@ module.exports = {
   },
 
   logout: async function (req, res) {
-
+    sails.log(req.session)
     req.session.destroy(function (err) {
 
       if (err) return res.serverError(err);
-
-      return res.view('user/login');
+      var loginReturn = req.session;
+      sails.log("res *******" + req.session)
+      return res.view('user/login', {
+        loginReturn: ""
+      });
 
     });
   },
@@ -69,6 +75,7 @@ module.exports = {
 
     if (message) return res.badRequest(message);
 
+    var loginReturn = req.session;
     var model = await User.find({
       username: req.params.username
     }).populate(req.params.association);
@@ -76,9 +83,33 @@ module.exports = {
     if (!model) return res.notFound();
 
     return res.view("user/registrationDetail", {
-      registration: JSON.stringify(model),
-      loginReturn: req.session,
+      registration: model,
+      loginReturn: loginReturn,
     });
+
+  },
+
+  add: async function (req, res) {
+
+    if (!['register'].includes(req.params.association)) return res.notFound();
+
+    const message = sails.getInvalidIdMsg(req.params);
+
+    if (message) return res.badRequest(message);
+
+    var student = await User.find({
+      username: req.params.username
+    });
+    sails.log(student)
+    if (student == null) return res.notFound();
+
+    if (req.params.association == "register") {
+      if (!await Activity.findOne(req.params.fk)) return res.notFound();
+    }
+
+    await User.addToCollection(student[0].id, req.params.association).members(req.params.fk);
+
+    return res.ok('Operation completed.');
 
   },
 };
