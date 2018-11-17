@@ -37,12 +37,17 @@ module.exports.routes = {
    *                                                                          *
    ***************************************************************************/
 
-  'GET /activity/detail/:id': 'ActivityController.detail',
+  'GET /activity/detail/:username/:id': 'ActivityController.detail',
   'GET /activity/admin/': 'ActivityController.admin',
   //'GET /activity/paginate': 'ActivityController.paginate',
   'GET /activity/update/:id': 'ActivityController.update',
   'POST /activity/update/:id': 'ActivityController.update',
-  'POST /activity/delete/:id': 'ActivityController.delete',
+  //'POST /activity/delete/:id': 'ActivityController.delete',
+  'DELETE /activity/:id': 'ActivityController.delete',
+  'POST /user/:username/:association/add/:fk': 'UserController.add',
+  'POST /user/:username/:association/remove/:fk': 'UserController.remove',
+  'GET /activity/:username/:id/:association':'ActivityController.populate',
+
 
   //  ╔═╗╔═╗╦  ╔═╗╔╗╔╔╦╗╔═╗╔═╗╦╔╗╔╔╦╗╔═╗
   //  ╠═╣╠═╝║  ║╣ ║║║ ║║╠═╝║ ║║║║║ ║ ╚═╗
@@ -53,10 +58,7 @@ module.exports.routes = {
   '/user/add': { view: '404' },
   '/user/remove': { view: '404' },
   
-  '/activity/:id/:association': 'ActivityController.populate',
   '/user/registrationDetail/:username/:association': 'UserController.populate',
-  '/user/:username/:association/add/:fk': 'UserController.add',
-  '/user/:id/:association/remove/:fk': 'UserController.remove',
 
   
   //  ╦ ╦╔═╗╔╗ ╦ ╦╔═╗╔═╗╦╔═╔═╗

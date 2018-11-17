@@ -7,7 +7,7 @@
 
 module.exports = {
   create: async function (req, res) {
-    var loginReturn=req.session;
+    var loginReturn = req.session;
     if (req.method == "GET")
       return res.view('activity/create', {
         loginReturn: loginReturn,
@@ -16,16 +16,16 @@ module.exports = {
     if (typeof req.body.Activity === "undefined")
       return res.badRequest("Form-data not received.");
 
-    var activity=req.body.Activity;
-    var date= new Date(req.body.Activity.event_date);
-    activity.event_date=date;
+    var activity = req.body.Activity;
+    var date = new Date(req.body.Activity.event_date);
+    activity.event_date = date;
     await Activity.create(activity);
 
     return res.ok("Successfully created!");
   },
 
   index: async function (req, res) {
-    var loginReturn=req.session;
+    var loginReturn = req.session;
 
     var models = await Activity.find({
       high_light: 'high_light'
@@ -39,23 +39,40 @@ module.exports = {
   },
 
   detail: async function (req, res) {
-    var loginReturn=req.session;
+    var registered = false;
+    var isStudent = false;
+    var loginReturn = req.session;
     var message = Activity.getInvalidIdMsg(req.params);
 
     if (message) return res.badRequest(message);
 
     var model = await Activity.findOne(req.params.id);
-
+    if (req.params.username == 'student') {
+      isStudent = true;
+      var registeredActivity = await User.find({
+        username: req.params.username
+      }).populate("register");
+      if (registeredActivity != null) {
+        registeredActivity[0].register.forEach(function (v) {
+          sails.log("element: " + JSON.stringify(v));
+          if (v.id == model.id) {
+            sails.log("id: " + v.id + " " + model.id);
+            registered = true;
+          }
+        });
+      }
+    }
     if (!model) return res.notFound();
 
     return res.view('activity/detail', {
       activity: model,
       loginReturn: loginReturn,
+      registered: registered,
+      isStudent: isStudent
     });
-
   },
   admin: async function (req, res) {
-    var loginReturn=req.session;
+    var loginReturn = req.session;
     var models = await Activity.find();
     return res.view('activity/admin', {
       activities: models,
@@ -66,7 +83,7 @@ module.exports = {
 
   // action - update
   update: async function (req, res) {
-    var loginReturn=req.session;
+    var loginReturn = req.session;
 
     var message = Activity.getInvalidIdMsg(req.params);
 
@@ -109,7 +126,7 @@ module.exports = {
   },
 
   delete: async function (req, res) {
-
+    var loginReturn = req.session;
     if (req.method == "GET") return res.forbidden();
 
     var message = Activity.getInvalidIdMsg(req.params);
@@ -120,12 +137,15 @@ module.exports = {
 
     if (models.length == 0) return res.notFound();
 
-    return res.ok("Activity Deleted.");
+    return res.view("activity/admin", {
+      activities: models,
+      loginReturn: loginReturn,
+    });
 
   },
 
   search: async function (req, res) {
-    var loginReturn=req.session;
+    var loginReturn = req.session;
     const qName = req.query.name || '';
     var qOrganizer = req.query.organizer;
     var startTime = req.query.startTime;
@@ -201,7 +221,7 @@ module.exports = {
     });
   },
   paginate: async function (req, res) {
-    var loginReturn=req.session;
+    var loginReturn = req.session;
 
     const qPage = Math.max(req.query.page - 1, 0) || 0;
 
@@ -219,5 +239,21 @@ module.exports = {
       count: numOfPage,
       loginReturn: loginReturn,
     });
+  },
+
+  populate: async function (req, res) {
+
+    if (!['registered'].includes(req.params.association)) return res.notFound();
+
+    const message = sails.getInvalidIdMsg(req.params);
+
+    if (message) return res.badRequest(message);
+
+    var model = await Activity.findOne(req.params.id).populate(req.params.association);
+
+    if (!model) return res.notFound();
+
+    return res.json(model);
+
   },
 };

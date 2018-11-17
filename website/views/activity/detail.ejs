@@ -2,20 +2,89 @@
 <div class="container">
   <div class="row">
     <div class="card col-12 col-xl-3 col-lg-3 col-sm-12">
-      <p class="font-weight-bold mt-2"><%= activity.name %></p>
-      <img class="rounded float-left mb-3" src=<%= activity.img_url %> alt="">
+      <p class="font-weight-bold mt-2">
+        <%= activity.name %>
+      </p>
+      <img class="rounded float-left mb-3" src=<%=activity.img_url %> alt="">
     </div>
     <div class="card col-12 col-xl-9 col-lg-9 col-sm-12">
       <br><br>
       <table class="table table-bordered">
-        <tr><td><%= activity.full_description %></td></tr>
-        <tr><td><span class="font-weight-bold">Organizer: </span><%= activity.organizer %></td></tr>
-        <tr><td><span class="font-weight-bold">Date: </span><%= activity.event_date.getDate() %>/<%=activity.event_date.getMonth()+1%>/<%=activity.event_date.getFullYear()%></td></tr>
-        <tr><td><span class="font-weight-bold">Time: </span><%= activity.time %></td></tr>
-        <tr><td><span class="font-weight-bold">Venue: </span><%= activity.venue %></td></tr>
-        <tr><td><span class="font-weight-bold">Quota: </span><%= activity.quota %></td></tr>
+        <tr>
+          <td>
+            <%= activity.full_description %>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="font-weight-bold">Organizer: </span>
+            <%= activity.organizer %>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="font-weight-bold">Date: </span>
+            <%= activity.event_date.getDate() %>/
+            <%=activity.event_date.getMonth()+1%>/
+            <%=activity.event_date.getFullYear()%>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="font-weight-bold">Time: </span>
+            <%= activity.time %>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="font-weight-bold">Venue: </span>
+            <%= activity.venue %>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="font-weight-bold">Quota: </span>
+            <%= activity.quota %>
+          </td>
+        </tr>
       </table>
-      <a id="aRegister" style="display:none" href="/user/<%=loginReturn.username%>/register/add/<%=activity.id%>"><button type="button" class="btn btn-primary">Register</button></a>
+      <button id="btnRegister" type="button" class="btn btn-primary <%=isStudent&&!registered?'visible':'invisible'%>"
+        onclick="registerActivity('<%=loginReturn.username%>','<%=activity.id%>')">Register</button>
+      <button id="btnCancel" type="button" class="btn btn-danger <%=isStudent&&registered?'visible':'invisible'%>"
+        onclick="cancelActivity('<%=loginReturn.username%>','<%=activity.id%>')">Cancel</button>
     </div>
   </div>
 </div>
+<script>
+  async function registerActivity(username, id) {
+    var response = await fetch("/user/" + username + "/register/add/" + id, {
+      method: "POST",
+      credentials: 'same-origin',
+    });
+    console.log("response: " + response);
+    if (response.status == 200) {
+      var data = await response.json();
+      if (data == "Not enough quota") {
+        var r = alert(data);
+      } else {
+        $("#btnRegister").addClass("invisible").removeClass("visible")
+        $("#btnCancel").addClass("visible").removeClass("invisible");
+      }
+      console.log("succeed: " + data);
+    } else {
+      console.log("error: " + response);
+    }
+  }
+
+  async function cancelActivity(username, id) {
+    var response = await fetch("/user/" + username + "/register/remove/" + id, {
+      method: "POST",
+      credentials: 'same-origin',
+    });
+    console.log("response: " + response);
+    if (response.status == 200) {
+      var data = await response.json();
+      $("#btnRegister").addClass("visible").removeClass("invisible");
+      $("#btnCancel").addClass("invisible").removeClass("visible");
+      console.log("succeed: " + data);
+    } else {
+      console.log("error: " + response);
+    }
+  }
+
+</script>

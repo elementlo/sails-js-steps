@@ -98,7 +98,7 @@
     -->
 
     <!--TEMPLATES-->
-
+    
     <!--TEMPLATES END-->
 
 
@@ -164,16 +164,8 @@
         var aCreate = document.getElementById("aCreate");
         var aAdmin = document.getElementById("aAdmin");
         var aRegistered = document.getElementById("aRegistered");
-        var aRegister = document.getElementById("aRegister");
         "<% if(typeof (loginReturn) != 'undefined'&&loginReturn.username=='student') {%>"
         aRegistered.style.setProperty("display", "inline");
-        if (aRegister != null) {
-          aRegister.style.setProperty("display", "inline");
-        }
-        "<%}else{%>"
-        if (aRegister != null) {
-          aRegister.style.setProperty("display", "none");
-        }
         "<%}%>"
         "<% if(typeof (loginReturn) != 'undefined'&&loginReturn.username=='admin') {%>"
         aCreate.style.setProperty("display", "inline");

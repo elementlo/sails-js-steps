@@ -1,13 +1,76 @@
 <!-- admin.ejs -->
 <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Event</th>
+      <th scope="col">Organizer</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
   <tbody>
     <% for (let i = 0; i < activities.length; i++) { %>
     <tr>
-      <th scope="row"><%= i+1%></th>
+      <th scope="row">
+        <%= i+1%>
+      </th>
       <td class="text-primary">
-        <a href="/activity/update/<%= activities[i].id %>"><%= activities[i].name%></a>
+        <!-- <a href="/activity/update/<%= activities[i].id %>"> -->
+        <a href="/activity/detail/<%=typeof(loginReturn.username)=='undefined'?'anymous/':loginReturn.username+'/'%><%=activities[i].id %>">
+          <%= activities[i].name%></a>
+      </td>
+      <td>
+        <p>
+          <%= activities[i].organizer%>
+        </p>
+      </td>
+
+      <td>
+        <div class="text-center">
+          <a href="/activity/update/<%= activities[i].id %>"><button type="button" class="btn btn-warning">Update</button>
+          </a>
+          <button type="button" onclick="deleteActivity('<%= activities[i].id %>')" class="btn btn-danger ml-5">Delete</button>
+          <button type="button" onclick="checkRegistration('<%= activities[i].id %>')" class="btn btn-info ml-5">Registration</button>
+        </div>
+
       </td>
     </tr>
     <% } %>
   </tbody>
 </table>
+
+<script>
+  async function deleteActivity(activityId) {
+    var r = confirm("Are you sure to delete this?");
+    if (r == true) {
+      var response = await fetch("/activity/" + activityId, {
+        method: "DELETE",
+        credentials: 'same-origin',
+      });
+      console.log(response);
+      if (response.status == 200) {
+        window.location.reload()
+      } else {
+        alert(response.statusText)
+      }
+    }
+  }
+
+  async function checkRegistration(activityId) {
+    var response = await fetch("/activity/<%= loginReturn.username%>/" + activityId + "/registered", {
+      method: "GET",
+      credentials: 'same-origin',
+    });
+    if (response.status == 200) {
+      var data = await response.json();
+      var registeredUserName="Registered Student Name: ";
+      data.registered.forEach(element => {
+        registeredUserName+=element.username;
+      });
+      alert(registeredUserName);
+    } else {
+      alert(response.statusText)
+    }
+  }
+
+</script>

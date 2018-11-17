@@ -15,8 +15,6 @@ module.exports = {
 
     if (!req.body.username) return res.badRequest();
     if (!req.body.password) return res.badRequest();
-
-
     var user = await User.findOne({
       username: req.body.username
     });
@@ -58,7 +56,6 @@ module.exports = {
     req.session.destroy(function (err) {
 
       if (err) return res.serverError(err);
-      var loginReturn = req.session;
       sails.log("res *******" + req.session)
       return res.view('user/login', {
         loginReturn: ""
@@ -100,15 +97,49 @@ module.exports = {
     var student = await User.find({
       username: req.params.username
     });
-    sails.log(student)
     if (student == null) return res.notFound();
 
     if (req.params.association == "register") {
       if (!await Activity.findOne(req.params.fk)) return res.notFound();
     }
+    var activity = await Activity.findOne(req.params.fk);
+    var quotaRe = parseInt(activity.quota);
+    if (quotaRe > 0) {
+      sails.log("quota remain : " + quotaRe);
+      quotaRe--;
+      await Activity.update(req.params.fk).set({quota:quotaRe}).fetch();
+      await User.addToCollection(student[0].id, req.params.association).members(req.params.fk);
+      sails.log("Add Operation completed");
+      return res.ok('Operation completed.');
+    } else {
+      return res.ok("Not enough quota");
+    }
+  },
 
-    await User.addToCollection(student[0].id, req.params.association).members(req.params.fk);
+  remove: async function (req, res) {
 
+    if (!['register'].includes(req.params.association)) return res.notFound();
+
+    const message = sails.getInvalidIdMsg(req.params);
+
+    if (message) return res.badRequest(message);
+
+    var student = await User.find({
+      username: req.params.username
+    });
+
+    //if (!await User.findOne(req.params.id)) return res.notFound();
+    if (student == null) return res.notFound();
+
+    if (req.params.association == "register") {
+      if (!await Activity.findOne(req.params.fk)) return res.notFound();
+    }
+    var activity = await Activity.findOne(req.params.fk);
+    var quotaRe = parseInt(activity.quota);
+    quotaRe++;
+    await User.removeFromCollection(student[0].id, req.params.association).members(req.params.fk);
+
+    sails.log("Remove Operation completed");
     return res.ok('Operation completed.');
 
   },

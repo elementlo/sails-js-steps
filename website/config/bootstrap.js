@@ -38,7 +38,7 @@ module.exports.bootstrap = async function (done) {
       event_date: new Date('2018/9/30'),
       organizer: "student",
       venue: "LT1",
-      quota: "30",
+      quota: "0",
       high_light: "high_light",
     },
     {
