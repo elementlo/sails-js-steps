@@ -1,0 +1,3 @@
+{"user_register":8,"activity_registered":15,"id":10,"_id":10}
+{"user_register":8,"activity_registered":16,"id":11,"_id":11}
+{"$$indexCreated":{"fieldName":"id","unique":true,"sparse":false}}

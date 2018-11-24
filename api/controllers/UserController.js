@@ -38,15 +38,18 @@ module.exports = {
 
       req.session.username = req.body.username;
 
-      sails.log("Session: " + JSON.stringify(req.session));
-
       loginReturn = req.session;
       // return res.json(req.session);
+      if (req.wantsJSON) {
+        sails.log("Session: " + JSON.stringify(req.session));
+        return res.json(req.session);
+      } else {
+        return res.view('activity/index', {
+          loginReturn: loginReturn,
+          activities: models
+        });
+      }
 
-      return res.view('activity/index', {
-        loginReturn: loginReturn,
-        activities: models
-      });
     });
 
   },
@@ -78,11 +81,15 @@ module.exports = {
     }).populate(req.params.association);
 
     if (!model) return res.notFound();
-
-    return res.view("user/registrationDetail", {
-      registration: model,
-      loginReturn: loginReturn,
-    });
+    if (req.wantsJSON) {
+      sails.log(JSON.stringify(model));
+      return res.json(model);
+    } else {
+      return res.view("user/registrationDetail", {
+        registration: model,
+        loginReturn: loginReturn,
+      });
+    }
 
   },
 
@@ -107,7 +114,9 @@ module.exports = {
     if (quotaRe > 0) {
       sails.log("quota remain : " + quotaRe);
       quotaRe--;
-      await Activity.update(req.params.fk).set({quota:quotaRe}).fetch();
+      await Activity.update(req.params.fk).set({
+        quota: quotaRe
+      }).fetch();
       await User.addToCollection(student[0].id, req.params.association).members(req.params.fk);
       sails.log("Add Operation completed");
       return res.ok('Operation completed.');

@@ -49,7 +49,7 @@ module.exports.bootstrap = async function (done) {
       full_description: "These activities have been developed for teachers to use as a guide. Our intent is to give teachers a framework to follow for use in a Holocaust unit of study. The philosophy behind these activities is based on constructivist pedagogy, brain-based learning and the awareness of the theory of multiple intelligences. We hope teachers will use them and build on them to fit the needs of students, taking into account their age, maturity, and ability levels.",
       event_date: new Date('2018/10/30'),
       organizer: "student",
-      venue: "LT1",
+      venue: "OEE1007",
       quota: "30",
       high_light: "high_light",
     },
@@ -60,8 +60,8 @@ module.exports.bootstrap = async function (done) {
       short_description: "These activities have been developed for teachers to use as a guide",
       full_description: "These activities have been developed for teachers to use as a guide. Our intent is to give teachers a framework to follow for use in a Holocaust unit of study. The philosophy behind these activities is based on constructivist pedagogy, brain-based learning and the awareness of the theory of multiple intelligences. We hope teachers will use them and build on them to fit the needs of students, taking into account their age, maturity, and ability levels.",
       event_date: new Date('2018/11/30'),
-      organizer: "student",
-      venue: "LT1",
+      organizer: "professor",
+      venue: "AAB601",
       quota: "30",
       high_light: "high_light",
     },
@@ -72,7 +72,7 @@ module.exports.bootstrap = async function (done) {
       short_description: "These activities have been developed for teachers to use as a guide",
       full_description: "These activities have been developed for teachers to use as a guide. Our intent is to give teachers a framework to follow for use in a Holocaust unit of study. The philosophy behind these activities is based on constructivist pedagogy, brain-based learning and the awareness of the theory of multiple intelligences. We hope teachers will use them and build on them to fit the needs of students, taking into account their age, maturity, and ability levels.",
       event_date: new Date('2018/6/30'),
-      organizer: "student",
+      organizer: "professor",
       venue: "LT1",
       quota: "30",
       high_light: "high_light",
@@ -95,7 +95,7 @@ module.exports.bootstrap = async function (done) {
     username: "student"
   });
   const activity1 = await Activity.findOne({
-    name: "reading activity"
+    name: "playing activity"
   });
   const activity2 = await Activity.findOne({
     name: "hiking activity"

@@ -30,11 +30,16 @@ module.exports = {
     var models = await Activity.find({
       high_light: 'high_light'
     });
-    sails.log("Session: " + JSON.stringify(req.session));
-    return res.view('activity/index', {
-      activities: models,
-      loginReturn: loginReturn,
-    });
+
+    if (req.wantsJSON) {
+      sails.log("Models: " + JSON.stringify(models));
+      return res.json(models);
+    } else {
+      return res.view('activity/index', {
+        loginReturn: loginReturn,
+        activities: models
+      });
+    }
 
   },
 
@@ -63,13 +68,18 @@ module.exports = {
       }
     }
     if (!model) return res.notFound();
-
-    return res.view('activity/detail', {
-      activity: model,
-      loginReturn: loginReturn,
-      registered: registered,
-      isStudent: isStudent
-    });
+    if (req.wantsJSON) {
+      model.registered=registered;
+      sails.log("Session: " + JSON.stringify(model));
+      return res.json(model);
+    } else {
+      return res.view('activity/detail', {
+        activity: model,
+        loginReturn: loginReturn,
+        registered: registered,
+        isStudent: isStudent
+      });
+    }
   },
   admin: async function (req, res) {
     var loginReturn = req.session;
